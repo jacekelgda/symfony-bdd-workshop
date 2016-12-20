@@ -26,22 +26,22 @@ class FeatureContext implements Context
      */
     public function iAmAdminUser()
     {
-        throw new PendingException();
+        $adminUser = AdminUser::create('admin');
     }
 
     /**
      * @When I create user with username :arg1
      */
-    public function iCreateUserWithUsername($arg1)
+    public function iCreateUserWithUsername($username)
     {
-        throw new PendingException();
+        $user = User::create($username);
     }
 
     /**
      * @Then user :arg1 should have automatically generated password
      */
-    public function userShouldHaveAutomaticallyGeneratedPassword($arg1)
+    public function userShouldHaveAutomaticallyGeneratedPassword($username)
     {
-        throw new PendingException();
+        $user = Users::getUser($username);
     }
 }
