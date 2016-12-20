@@ -5,7 +5,10 @@ use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 
-class FeatureContext implements SnippetAcceptingContext
+use Domain\UseCase\OrderElevator;
+use Domain\Aggregate\ElevatorRequest;
+
+class FeatureContext implements SnippetAcceptingContext, OrderElevator\Responder
 {
     /**
      * Initializes context.
@@ -19,7 +22,9 @@ class FeatureContext implements SnippetAcceptingContext
      */
     public function iPressElevatorButton()
     {
-        throw new PendingException();
+        $command = new OrderElevator\Command();
+        $command->floorNumber = 0;
+        $useCase = new OrderElevator($command, $this);
     }
 
     /**
@@ -28,5 +33,10 @@ class FeatureContext implements SnippetAcceptingContext
     public function elevatorDoorShouldOpen()
     {
         throw new PendingException();
+    }
+
+    public function elevatorOrdered(ElevatorRequest $elevatorRequest)
+    {
+        return true;
     }
 }
