@@ -5,28 +5,21 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 
+use Source\Model\User;
+use Source\Model\AdminUser;
+
 /**
  * Defines application features from the specific context.
  */
 class FeatureContext implements Context
 {
-    /**
-     * Initializes context.
-     *
-     * Every scenario gets its own context instance.
-     * You can also pass arbitrary arguments to the
-     * context constructor through behat.yml.
-     */
-    public function __construct()
-    {
-    }
 
     /**
      * @Given I am admin user
      */
     public function iAmAdminUser()
     {
-        $adminUser = AdminUser::create('admin');
+        $adminUser = new AdminUser('admin');
     }
 
     /**
@@ -34,7 +27,7 @@ class FeatureContext implements Context
      */
     public function iCreateUserWithUsername($username)
     {
-        $user = User::create($username);
+        $user = new User($username);
     }
 
     /**
@@ -42,6 +35,10 @@ class FeatureContext implements Context
      */
     public function userShouldHaveAutomaticallyGeneratedPassword($username)
     {
-        $user = Users::getUser($username);
+        $users = new Users();
+        $user = $users->findUser($username);
+        if (!$user->isPasswordSet()) {
+            throw new \Exception('User has no password');
+        }
     }
 }
